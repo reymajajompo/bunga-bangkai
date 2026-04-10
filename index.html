@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untuk OAP</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle, #0f0f0f, #1a1a2e);
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* 💥 HEART */
+    .heart {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      pointer-events: none;
+      z-index: 9999;
+      filter: brightness(1.6) drop-shadow(0 0 10px #ff4d6d);
+      text-shadow: 0 0 10px #ff4d6d, 0 0 30px #ff1e4d;
+      animation: burst 2s ease-out forwards;
+    }
+
+    @keyframes burst {
+      0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+      100% {
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* 📦 CONTAINER */
+    .box {
+      width: 90%;
+      max-width: 350px;
+      background: rgba(26,26,26,0.9);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255,0,100,0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    h1, h2 {
+      margin: 10px 0;
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    /* 🔘 BUTTON */
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #ff2e63;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff1e4d;
+      box-shadow: 0 0 10px #ff2e63;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-size: 15px;
+    }
+
+    #afterText {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #aaa;
+      opacity: 0;
+      transition: 1s;
+    }
+
+    #afterText.show {
+      opacity: 1;
+    }
+
+    /* 🖼️ FOTO */
+    #photo {
+      margin-top: 15px;
+      width: 100%;
+      border-radius: 12px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: 1s;
+    }
+
+    #photo.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ❓ HIDDEN */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 📦 BOX -->
+<div class="box" id="box">
+  <h2>we, OAP Jawa</h2>
+  <p>
+    ini bunga buat ko tp harus<br>
+   tekan belex pu tombol ni
+  </p>
+
+  <button onclick="mulai()">tombol belex</button>
+</div>
+
+<!-- ❓ QUESTION -->
+<div class="box hidden" id="questionBox">
+  <h1>bunga susah jd, sa cuma bisa kasih hati sj buat ko</h1>
+  <h1>bgmna? suka kah tidak?? 😏💖</h1>
+
+  <button onclick="jawab('suka')">suka</button>
+  <button onclick="jawab('tidak')">trada, biasa sj</button>
+
+  <div id="result"></div>
+  <div id="afterText"></div>
+  <img id="photo" src="">
+</div>
+
+<script>
+  const hearts = ["❤️","💖","💗","💓","💕","💞","💘"];
+
+  function mulai() {
+    burstHearts();
+
+    document.getElementById("box").classList.add("hidden");
+
+    setTimeout(() => {
+      document.getElementById("questionBox").classList.remove("hidden");
+    }, 2200);
+  }
+
+  function jawab(pilihan) {
+    let mainText = "";
+    let after = "";
+    let img = "";
+
+    if (pilihan === "suka") {
+      mainText = "sa jg suka ko kah, sa jg tau ko suka sa";
+      after = "kelihatan skli dari ko pu tatapan";
+      img = "images/Gegeb1.jpg";
+    } else {
+      mainText = "soalnya yg luar biasa itu";
+      after = "klo sa deng ko sama-sama wkwkwk";
+      img = "images/Gegeb2.JPEG";
+    }
+
+    document.getElementById("result").innerHTML = mainText;
+
+    setTimeout(() => {
+      const afterEl = document.getElementById("afterText");
+      afterEl.innerHTML = after;
+      afterEl.classList.add("show");
+    }, 800);
+
+    setTimeout(() => {
+      const photo = document.getElementById("photo");
+      photo.src = img;
+      photo.classList.add("show");
+    }, 1500);
+  }
+
+  function burstHearts() {
+    for (let i = 0; i < 35; i++) {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+
+      heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+
+      const x = (Math.random() - 0.5) * 300;
+      const y = (Math.random() - 0.5) * 300;
+
+      heart.style.setProperty("--x", x + "px");
+      heart.style.setProperty("--y", y + "px");
+
+      heart.style.fontSize = (15 + Math.random() * 20) + "px";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 2000);
+    }
+  }
+</script>
+
+</body>
+</html>
